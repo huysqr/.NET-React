@@ -1,31 +1,15 @@
-using Domain;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ReactivitiesController : ControllerBase
+    public class BaseApiController : ControllerBase
     {
-        private readonly DataContext _context;
-        public ReactivitiesController(DataContext context)
-        {
-            _context = context;
+        private IMediator _mediator;
 
-        }
-
-        [HttpGet]  //api/activities
-        public async Task<ActionResult<List<Activity>>> GetActivities()
-        {
-            return await _context.Activities.ToListAsync();
-        }
-
-        [HttpGet("{id}")]  //api/activities
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
-        {
-            return await _context.Activities.FindAsync(id);
-        }
+        protected IMediator Mediator => _mediator ??=
+            HttpContext.RequestServices.GetService<IMediator>();0
+        
     }
 }
+0
